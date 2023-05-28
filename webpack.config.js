@@ -1,6 +1,10 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require("path");
 
 module.exports = {
+    output: {
+        assetModuleFilename: path.join('images', '[name].[hash][ext][query]'),
+    },
     module: {
         rules: [
             {
@@ -13,11 +17,23 @@ module.exports = {
             {
                 test: /\.(sc|c)ss$/i, // /\.s?css$/i
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: { publicPath: "" }
+                    },
                     'css-loader',
                     'postcss-loader',
                     'sass-loader',
                 ]
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                type: "asset",
+                // parser: {
+                //   dataUrlCondition: {
+                //       maxSize: 30 * 1024,
+                //   }
+                // },
             },
         ]
     },
